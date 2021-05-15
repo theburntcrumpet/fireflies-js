@@ -1,4 +1,5 @@
 const ANIMATION_ROTATION = 0.025;
+const ANIMATION_SCALAR = 0.1;
 const GROW_TO = 50;
 const GROW_FROM = 0.1;
 const scene = new THREE.Scene();
@@ -62,7 +63,7 @@ renderer.setAnimationLoop(() => {
 	fireflyObjects.forEach(function(fireflies){
 		if (growing)
 		{
-			fireflies.scale.add(new THREE.Vector3(0.1,0.1,0.1));
+			fireflies.scale.addScalar(ANIMATION_SCALAR);
 			fireflies.rotateZ(ANIMATION_ROTATION);
 			fireflies.rotateX(ANIMATION_ROTATION);
 			if(fireflies.scale.x >= GROW_TO)
@@ -70,10 +71,10 @@ renderer.setAnimationLoop(() => {
 		}
 		else
 		{
-			fireflies.scale.add(new THREE.Vector3(-0.1,-0.1,-0.1));
+			fireflies.scale.subScalar(ANIMATION_SCALAR);
 			fireflies.rotateZ(0-ANIMATION_ROTATION);
 			fireflies.rotateY(0-ANIMATION_ROTATION);
-			if(fireflies.scale.x <= GROW_FROM)
+			if(fireflies.scale.x < GROW_FROM)
 				growing = true;
 		}
 	});
