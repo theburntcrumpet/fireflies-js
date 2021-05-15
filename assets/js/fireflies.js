@@ -59,6 +59,8 @@ fireflyMaterials.forEach(function(fireflyMaterial)
 });
 
 renderer.render(scene,camera);
+const controls = new THREE.OrbitControls(camera,renderer.domElement);
+controls.autoRotate = true;
 renderer.setAnimationLoop(() => {
 	fireflyObjects.forEach(function(fireflies){
 		if (growing)
@@ -85,5 +87,6 @@ renderer.setAnimationLoop(() => {
 		camera.aspect = aspect;
 		camera.updateProjectionMatrix();
 	}
+	controls.update();
 	renderer.render(scene, camera);
 });
