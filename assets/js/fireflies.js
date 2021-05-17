@@ -9,7 +9,6 @@ camera.position.set( 0, 0, 100 );
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
-var growing = true;
 const colours = [
 	0xFF0000,
     0x00FF00,
@@ -52,6 +51,7 @@ var currentRotation = 0;
 fireflyMaterials.forEach(function(fireflyMaterial)
 {
 	const pointsObject = new THREE.Points(fireflyGeometry, fireflyMaterial);
+	pointsObject.growing = true;
 	pointsObject.rotateX(currentRotation);
 	currentRotation+=360/colours.length;
 	fireflyObjects.push(pointsObject);
@@ -63,13 +63,13 @@ const controls = new THREE.OrbitControls(camera,renderer.domElement);
 controls.autoRotate = true;
 renderer.setAnimationLoop(() => {
 	fireflyObjects.forEach(function(fireflies){
-		if (growing)
+		if (fireflies.growing)
 		{
 			fireflies.scale.addScalar(ANIMATION_SCALAR);
 			fireflies.rotateZ(ANIMATION_ROTATION);
 			fireflies.rotateX(ANIMATION_ROTATION);
 			if(fireflies.scale.x >= GROW_TO)
-				growing = false;
+				fireflies.growing = false;
 		}
 		else
 		{
@@ -77,7 +77,7 @@ renderer.setAnimationLoop(() => {
 			fireflies.rotateZ(0-ANIMATION_ROTATION);
 			fireflies.rotateY(0-ANIMATION_ROTATION);
 			if(fireflies.scale.x < GROW_FROM)
-				growing = true;
+				fireflies.growing = true;
 		}
 	});
 	renderer.setSize( window.innerWidth, window.innerHeight );
